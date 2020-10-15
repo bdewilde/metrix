@@ -72,6 +72,7 @@ def test_metric_stream_str(name):
     assert str(mstream) and name in str(mstream)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
     "init_kwargs,exp_results,wait_time",
     [
@@ -141,54 +142,68 @@ def test_metric_stream_send(init_kwargs, exp_results, wait_time, test_elements):
     assert obs_results == exp_results
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
-    "init_kwargs,timer_kwargs,exp_results",
+    "init_kwargs,timer_kwargs,wait_time,exp_results",
     [
         (
             {"name": "metric", "agg": sum, "default_tags": None, "batch_size": 1},
             {"scale": 1, "tags": None},
-            [("metric.sum", 0.1, None)],
+            0.2,
+            [("metric.sum", 0.2, None)],
+        ),
+        (
+            {"name": "metric", "agg": sum, "default_tags": None, "batch_size": 1},
+            {"scale": 1, "tags": None},
+            0.15,
+            [("metric.sum", 0.15, None)],
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": None, "batch_size": 1},
             {"scale": 1000, "tags": None},
-            [("metric.sum", 100.0, None)],
+            0.2,
+            [("metric.sum", 200.0, None)],
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": None, "batch_size": 1},
             {"scale": 1, "tags": {"foo": "bar"}},
-            [("metric.sum", 0.1, {"foo": "bar"})],
+            0.2,
+            [("metric.sum", 0.2, {"foo": "bar"})],
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": {"foo": "bar"}, "batch_size": 1},
             {"scale": 1, "tags": None},
-            [("metric.sum", 0.1, {"foo": "bar"})],
+            0.2,
+            [("metric.sum", 0.2, {"foo": "bar"})],
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": {"foo": "bar"}, "batch_size": 1},
             {"scale": 1, "tags": {"bat": "baz"}},
-            [("metric.sum", 0.1, {"bat": "baz", "foo": "bar"})],
+            0.2,
+            [("metric.sum", 0.2, {"bat": "baz", "foo": "bar"})],
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": {"foo": "bar"}, "batch_size": 1},
             {"scale": 1, "tags": {"foo": "BAR"}},
-            [("metric.sum", 0.1, {"foo": "BAR"})],
+            0.2,
+            [("metric.sum", 0.2, {"foo": "BAR"})],
         ),
         (
             {"name": "metric", "agg": [min, max], "default_tags": None, "batch_size": 1},
             {"scale": 1, "tags": None},
-            [("metric.min", 0.1, None), ("metric.max", 0.1, None)],
+            0.2,
+            [("metric.min", 0.2, None), ("metric.max", 0.2, None)],
         ),
     ]
 )
-def test_metric_stream_timer(init_kwargs, timer_kwargs, exp_results):
+def test_metric_stream_timer(init_kwargs, timer_kwargs, wait_time, exp_results):
     mstream = MStream(**init_kwargs)
     # hack! sink stream outputs to a list
     # normally, we'd use a MSink w/ MCoordinator to handle this
     obs_results = mstream.stream.sink_to_list()
     with mstream.timer(**timer_kwargs):
-        time.sleep(0.25)
-    time.sleep(0.25)
+        time.sleep(wait_time)
+    time.sleep(wait_time)
     assert len(obs_results) == len(exp_results)
     assert all(
         (

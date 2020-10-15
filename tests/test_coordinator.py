@@ -134,6 +134,7 @@ def test_metric_coordinator_add_msink(msinks,rate_limits):
     assert len(mc.msinks) == len(mc.stream.downstreams) == len(msinks)
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize(
     "init_kwargs,exp_results",
     [
