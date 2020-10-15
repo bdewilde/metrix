@@ -177,7 +177,7 @@ class MCoordinator:
             # validate and transform rate_limit arg into a sequence of per-sink values
             if rate_limit is None or isinstance(rate_limit, (int, float)):
                 rate_limits = [rate_limit for _ in range(len(msinks))]
-            elif isinstance(rate_limit, Sequence):
+            elif isinstance(rate_limit, Sequence) and not isinstance(rate_limit, str):
                 if len(rate_limit) != len(msinks):
                     raise ValueError(
                         f"rate_limit={rate_limit} is incompatible with msinks={msinks}; "

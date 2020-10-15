@@ -57,11 +57,19 @@ def test_metric_stream_init(init_kwargs):
         {"name": "metric", "agg": sum, "window_size": 1, "batch_size": 1},
         {"name": "metric", "agg": sum, "window_size": -1},
         {"name": "metric", "agg": sum, "batch_size": -1},
+        {"name": "metric", "agg": "sum", "batch_size": 1},
+        {"name": "metric", "agg": None, "batch_size": 1},
     ]
 )
 def test_metric_stream_bad_init(init_kwargs):
-    with pytest.raises(ValueError):
+    with pytest.raises((ValueError, TypeError)):
         mstream = MStream(**init_kwargs)
+
+
+@pytest.mark.parametrize("name", ["foo", "bar"])
+def test_metric_stream_str(name):
+    mstream = MStream(name, agg=sum, batch_size=1)
+    assert str(mstream) and name in str(mstream)
 
 
 @pytest.mark.parametrize(
@@ -180,12 +188,12 @@ def test_metric_stream_timer(init_kwargs, timer_kwargs, exp_results):
     obs_results = mstream.stream.sink_to_list()
     with mstream.timer(**timer_kwargs):
         time.sleep(0.1)
-    time.sleep(0.1)
+    time.sleep(0.2)
     assert len(obs_results) == len(exp_results)
     assert all(
         (
             obs_result.name == exp_result[0] and
-            obs_result.value == pytest.approx(exp_result[1], rel=0.2) and
+            obs_result.value == pytest.approx(exp_result[1], rel=0.3) and
             obs_result.tags == exp_result[2]
         )
         for obs_result, exp_result in zip(obs_results, exp_results)

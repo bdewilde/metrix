@@ -187,7 +187,7 @@ class MStream:
         """
         if isinstance(agg, Mapping):
             metric_aggs = [self._make_metric_agg(key, val) for key, val in agg.items()]
-        elif isinstance(agg, Sequence):
+        elif isinstance(agg, Sequence) and not isinstance(agg, str):
             metric_aggs = [self._make_metric_agg(item.__name__, item) for item in agg]
         elif isinstance(agg, Callable):
             metric_aggs = [self._make_metric_agg(agg.__name__, agg)]

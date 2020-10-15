@@ -60,6 +60,7 @@ class MSinkToList:
 )
 def test_metric_coordinator_init(mstreams, msinks, rate_limit):
     mc = MC(mstreams=mstreams, msinks=msinks, rate_limit=rate_limit)
+    assert str(mc)
     assert all(hasattr(mc, attr) for attr in ["stream", "metric_mstreams", "msinks"])
     if mstreams:
         assert (
@@ -76,6 +77,26 @@ def test_metric_coordinator_init(mstreams, msinks, rate_limit):
                 assert all(ds.interval == rate_limit for ds in mc.stream.downstreams)
         else:
             assert all(isinstance(ds, streamz.core.buffer) for ds in mc.stream.downstreams)
+
+
+@pytest.mark.parametrize(
+    "mstreams,msinks,rate_limit",
+    [
+        (
+            [MStream("m1", agg=sum, batch_size=1)],
+            [MSinkPrinter()],
+            [1.0, 1.0],
+        ),
+        (
+            [MStream("m1", agg=sum, batch_size=1)],
+            [MSinkPrinter()],
+            "10s",
+        ),
+    ]
+)
+def test_metric_coordinator_bad_init(mstreams, msinks, rate_limit):
+    with pytest.raises((ValueError, TypeError)):
+        _ = MC(mstreams=mstreams, msinks=msinks, rate_limit=rate_limit)
 
 
 @pytest.mark.parametrize(

@@ -12,9 +12,16 @@ def melement():
     return MElement("metric", 1, tags={"foo": "bar"})
 
 
+def test_msink(melement):
+    msink = metrix.sinks.MSink()
+    with pytest.raises(NotImplementedError):
+        _ = msink(melement)
+
+
 def test_msink_printer(melement):
     msink = metrix.sinks.MSinkPrinter()
     msink(melement)  # assert not raises, effectively
+    assert str(msink)
     # TODO: is there really no way to use `capsys` fixture to get the print statement
     # arising from this call? afaict it only captures prints *in* the test function
 
@@ -37,6 +44,7 @@ def test_msink_logger(init_kwargs, caplog):
         caplog.set_level(init_kwargs["level"])
     msink = metrix.sinks.MSinkLogger(**init_kwargs)
     msink(melement)  # assert not raises, effectively
+    assert str(msink)
     assert all(hasattr(msink, attr) for attr in ["logger", "level", "msg_fmt_str"])
     assert msink.logger.name == init_kwargs.get("name", "metrix.sinks")
     if init_kwargs.get("level"):
@@ -62,6 +70,7 @@ def test_msink_tsdb(melement):
     msink = metrix.sinks.MSinkTSDB(mock_tsdb_client)
     assert msink.tsdb_client is mock_tsdb_client
     msink(melement)  # assert not raises, effectively
+    assert str(msink)
     mock_tsdb_client.send.assert_called_once_with(
         melement.name, melement.value, **melement.tags
     )
