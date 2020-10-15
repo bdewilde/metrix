@@ -193,7 +193,7 @@ def test_metric_stream_timer(init_kwargs, timer_kwargs, exp_results):
     assert all(
         (
             obs_result.name == exp_result[0] and
-            obs_result.value == pytest.approx(exp_result[1], rel=0.3) and
+            obs_result.value == pytest.approx(exp_result[1], rel=1.0) and
             obs_result.tags == exp_result[2]
         )
         for obs_result, exp_result in zip(obs_results, exp_results)
