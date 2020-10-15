@@ -82,7 +82,7 @@ def test_metric_stream_str(name):
                 MElement("metric.sum", 6, tags={"foo": "bar"}),
                 MElement("metric.sum", 4, tags={"bat": "baz"})
             ],
-            0.3,
+            0.5,
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": None, "batch_size": 5},
@@ -94,7 +94,7 @@ def test_metric_stream_str(name):
                 MElement("metric.sum", 2, tags={"foo": "bar"}),
                 MElement("metric.sum", 3, tags={"bat": "baz"})
             ],
-            0.1,
+            0.25,
         ),
         (
             {"name": "metric", "agg": [min, max], "default_tags": None, "batch_size": 10},
@@ -106,7 +106,7 @@ def test_metric_stream_str(name):
                 MElement("metric.max", 2, tags={"foo": "bar"}),
                 MElement("metric.max", 3, tags={"bat": "baz"})
             ],
-            0.1,
+            0.25,
         ),
         (
             {"name": "m", "agg": {"avg": statistics.mean}, "default_tags": {"foo": "bar"}, "batch_size": 10},
@@ -114,7 +114,7 @@ def test_metric_stream_str(name):
                 MElement("m.avg", 1.875, tags={"foo": "bar"}),
                 MElement("m.avg", 2, tags={"bat": "baz", "foo": "bar"}),
             ],
-            0.1,
+            0.25,
         ),
         (
             {"name": "metric", "agg": sum, "default_tags": {"foo": "BAR"}, "batch_size": 10},
@@ -123,7 +123,7 @@ def test_metric_stream_str(name):
                 MElement("metric.sum", 6, tags={"foo": "bar"}),
                 MElement("metric.sum", 4, tags={"bat": "baz", "foo": "BAR"}),
             ],
-            0.1,
+            0.25,
         ),
     ]
 )
@@ -187,8 +187,8 @@ def test_metric_stream_timer(init_kwargs, timer_kwargs, exp_results):
     # normally, we'd use a MSink w/ MCoordinator to handle this
     obs_results = mstream.stream.sink_to_list()
     with mstream.timer(**timer_kwargs):
-        time.sleep(0.1)
-    time.sleep(0.2)
+        time.sleep(0.25)
+    time.sleep(0.25)
     assert len(obs_results) == len(exp_results)
     assert all(
         (

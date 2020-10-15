@@ -182,5 +182,5 @@ def test_metric_stream_send(init_kwargs, exp_results, test_elements):
     for te in test_elements:
         mc.send(**te)
         time.sleep(0.01)
-    time.sleep(0.1)
+    time.sleep(0.2)
     assert all(msink.data == exp_results for msink in mc.msinks)
