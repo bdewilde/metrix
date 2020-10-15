@@ -21,15 +21,9 @@ sys.path.insert(0, "../src")
 
 # -- Project information -----------------------------------------------------
 
-import metrix
-
 project = "metrix"
 copyright = f"{datetime.now().year}, Burton DeWilde"
 author = "Burton DeWilde"
-
-# short X.Y version and full release version (including alpha/beta/rc tags)
-version = metrix.__version__.rsplit(".", 1)[0]
-release = metrix.__version__
 
 
 # -- General configuration ---------------------------------------------------
