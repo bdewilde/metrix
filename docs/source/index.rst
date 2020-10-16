@@ -10,8 +10,8 @@ metrics is only required or desired at lower rates.
 overview
 --------
 
-Users' entry into ``metrix`` is primarily through the :class:`MCoordinator` class.
-It coordinates the flow of metric elements through one or multiple streams into
+Users' entry into ``metrix`` is primarily through the :class:`MCoordinator <metrix.coordinator.MCoordinator>`
+class. It coordinates the flow of metric elements through one or multiple streams into
 one or multiple output destinations ("sinks"), with an optional rate limit imposed
 before each sink to avoid any problematic pileups.
 
