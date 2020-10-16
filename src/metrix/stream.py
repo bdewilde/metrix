@@ -2,7 +2,17 @@ from contextlib import contextmanager
 from functools import partial
 from operator import attrgetter
 from timeit import default_timer
-from typing import Callable, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple, Union
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 import streamz
 from toolz import itertoolz
@@ -147,7 +157,10 @@ class MStream:
             .filter(group_has_elements)
             # further group group elements by their `key`, which effectively creates
             # distinct metrics for each combination of (name, tags)
-            .map(partial(itertoolz.groupby, attrgetter("key")), stream_name="group_by_key")
+            .map(
+                partial(itertoolz.groupby, attrgetter("key")),
+                stream_name="group_by_key",
+            )
         )
         # if only one agg, we can build a simple stream
         if len(metric_aggs) == 1:
@@ -198,11 +211,14 @@ class MStream:
             )
         return metric_aggs
 
-    def _make_metric_agg(self, aggname: str, aggfunc: AggFunc) -> Tuple[str, MetricAggFunc]:
+    def _make_metric_agg(
+        self, aggname: str, aggfunc: AggFunc
+    ) -> Tuple[str, MetricAggFunc]:
         """
         From a user-provided aggregator, make a "metric aggregator":
         a (name, func) pair that aggregates groups of metric element values.
         """
+
         def metric_aggfunc(
             name: str,
             aggfunc: AggFunc,

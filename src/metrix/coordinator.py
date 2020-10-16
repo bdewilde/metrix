@@ -182,7 +182,7 @@ class MCoordinator:
                     raise ValueError(
                         f"rate_limit={rate_limit} is incompatible with msinks={msinks}; "
                         "they must have the same number of elements"
-                )
+                    )
                 else:
                     rate_limits = rate_limit
             else:

@@ -41,7 +41,11 @@ class MElement:
         return f"MElement(name='{self.name}', value={self.value}, tags={self.tags})"
 
     def __eq__(self, other: "MElement") -> bool:
-        if self.name == other.name and self.value == other.value and self.tags == other.tags:
+        if (
+            self.name == other.name
+            and self.value == other.value
+            and self.tags == other.tags
+        ):
             return True
         else:
             return False

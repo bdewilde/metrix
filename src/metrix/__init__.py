@@ -1,4 +1,5 @@
 from metrix.about import __version__
+
 # TODO: declare __version__ here rather than importing about.__version__
 # once readthedocs can use sufficiently new version of setuptools
 # i'm pretty sure that's the reason builds keep failing :/
