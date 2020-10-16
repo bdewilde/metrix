@@ -76,11 +76,11 @@ How can we do this with ``metrix``?
    ...     )
    ...     mc.send("wc", len(article["text"].split()))
    >>> # five minutes later... (fake aggregated metrics data, but again, let's pretend)
-   INFO:metrix.sinks:MElement(name=n_articles.sum, value=625, tags={'section': 'politics'})
-   INFO:metrix.sinks:MElement(name=n_articles.sum, value=290, tags={'section': 'science'})
-   INFO:metrix.sinks:MElement(name=n_articles.sum, value=35, tags={'section': 'NA'})
-   INFO:metrix.sinks:MElement(name=wc.sum, value=161690, tags=None)
-   INFO:metrix.sinks:MElement(name=wc.mean, value=170.2, tags=None)
+   INFO:metrix.sinks:MElement(name='n_articles.sum', value=625, tags={'section': 'politics'})
+   INFO:metrix.sinks:MElement(name='n_articles.sum', value=290, tags={'section': 'science'})
+   INFO:metrix.sinks:MElement(name='n_articles.sum', value=35, tags={'section': 'NA'})
+   INFO:metrix.sinks:MElement(name='wc.sum', value=161690, tags=None)
+   INFO:metrix.sinks:MElement(name='wc.mean', value=170.2, tags=None)
 
 .. toctree::
    :maxdepth: 2

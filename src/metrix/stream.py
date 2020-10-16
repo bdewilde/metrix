@@ -18,14 +18,14 @@ MetricAggFunc = Callable[[Dict[Optional[str], Iterable[MElement]]], Tuple[MEleme
 
 class MStream:
     """
-    A stream of :class:`MElement` s that groups elements into batches of fixed
-    time or number, further groups batches by distinct assigned tags, then aggregates
-    each group's values by one or multiple functions.
+    A stream of :class:`MElement <metrix.element.MElement>` s that groups elements
+    into batches of fixed time or number, further groups batches by distinct assigned tags,
+    then aggregates each group's values by one or multiple functions.
 
-    To do any useful work, metric streams must be connected to an ``MSink``, which
-    operates on elements in a visible / persistent way. In typical usage, you'll want
-    to connect multiple streams to multiple sinks using a ``MCoordinator``.
-    Refer to that class for a more realistic usage example than what follows here:
+    To do any useful work, metric streams must be connected to a :class:`MSink <metrix.sinks.MSink>`,
+    which operates on elements in a visible / persistent way. In typical usage, you'll
+    want to connect multiple streams to multiple sinks using a centralized coordinator:
+    :class:`MCoordinator <metrix.coordinator.MCoordinator>`.
 
     .. code-block:: pycon
 
@@ -99,7 +99,7 @@ class MStream:
         self._build_stream()
 
     def __str__(self):
-        return f"MStream(name={self.name}, agg={self.agg})"
+        return f"MStream(name='{self.name}', agg={self.agg})"
 
     def _validate_sizes(self, window_size: Optional[int], batch_size: Optional[int]):
         if not bool(window_size) ^ bool(batch_size):

@@ -8,8 +8,8 @@ __all__ = ["MSink", "MSinkPrinter", "MSinkLogger", "MSinkTSDB"]
 
 class MSink:
     """
-    Base class for subclasses that are called on a :class:`MElement` and
-    perform some useful action on it.
+    Base class for subclasses that are called on a :class:`MElement <metrix.element.MElement>`
+    and perform some useful action on it.
     """
 
     def __call__(self, me: MElement) -> None:
@@ -21,9 +21,10 @@ class MSink:
 
 class MSinkPrinter(MSink):
     """
-    Class that's called on a :class:`MElement` and prints it to stdout. That's it!
-    This class is useful in development when experimenting with ``MCoordinator``
-    so users can see stream contents, but is not suitable for production.
+    Class that's called on a :class:`MElement <metrix.element.MElement>` and prints it
+    to stdout. That's it! This class is useful in development when experimenting with
+    :class:`MCoordinator <metrix.coordinator.MCoordinator>` so users can see stream
+    contents, but is not suitable for production.
 
     .. code-block:: pycon
 
@@ -42,7 +43,8 @@ class MSinkPrinter(MSink):
 
 class MSinkLogger(MSink):
     """
-    Class that's called on a :class:`MElement` and logs it, as-is.
+    Class that's called on a :class:`MElement <metrix.element.MElement>` and logs it,
+    as-is.
 
     .. code-block:: pycon
 
@@ -59,12 +61,13 @@ class MSinkLogger(MSink):
         level: Level at which metric elements are logged.
         msg_fmt_str: Message format string into which metric elements are merged using
             a string formatting operator. Must contain exactly one "%s" for a given
-            :class:`MElement`; may contain any other hard-coded text you wish.
+            :class:`MElement <metrix.element.MElement>`; may contain any other
+            hard-coded text you wish.
 
     Attributes:
-        logger
-        level
-        msg_fmt_str
+        logger: :class:`logging.Logger`
+        level: int
+        msg_fmt_str: str
     """
 
     __slots__ = ("logger", "level", "msg_fmt_str")
@@ -94,8 +97,8 @@ class MSinkLogger(MSink):
 
 class MSinkTSDB(MSink):
     """
-    Class that's called on a :class:`MElement` and sends its data to OpenTSDB
-    via an instantiated TSDB client.
+    Class that's called on a :class:`MElement <metrix.element.MElement>` and sends
+    its data to OpenTSDB via an instantiated TSDB client.
 
     Args:
         tsdb_client: Instantiated TSDB client with a ``send`` method, such as

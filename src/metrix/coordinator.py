@@ -87,12 +87,12 @@ class MCoordinator:
        INFO:metrix.sinks:MElement(name=msg_len.stdev, value=3.0276503540974917, tags=None)
 
     Args:
-        mstreams: One or more :class:`MStream` s through which metric elements
+        mstreams: One or more :class:`MStream <metrix.stream.MStream>` s through which
+            metric elements are sent. Typically provided on init, but may also be passed
+            individually via :meth:`MCoordinator.add_mstream()`.
+        msinks: One or more :class:`MSink <metrix.sinks.MSink>` s to which metric elements
             are sent. Typically provided on init, but may also be passed individually
-            via :meth:`MCoordinator.add_stream()`.
-        msinks: One or more :class:`MSink` s to which metric elements are sent.
-            Typically provided on init, but may also be passed individually via
-            :meth:`MCoordinator.add_sink()`. In a development context, the simple
+            via :meth:`MCoordinator.add_msink()`. In a development context, the simple
             ``MSinkPrinter`` will give visibility into the outputs of metric
             streams, but in a production, you'll want to specify more persistent
             metric sinks like ``MSinkLogger`` and ``MSinkTSDB``.
@@ -224,8 +224,7 @@ class MCoordinator:
             value: Numeric metric value.
             tags: Optional tags to associate with this specific metric ``value``.
 
-        See Also:
-            :meth:`MStream.send()`
+        .. seealso:: :meth:`MStream.send() <metrix.stream.MStream.send>`
         """
         self.metric_mstreams[name].send(value=value, tags=tags)
 
@@ -241,6 +240,6 @@ class MCoordinator:
             tags: Optional tags to associate with this specific timer value.
 
         See Also:
-            :meth:`MStream.timer()`
+            :meth:`MStream.timer() <metrix.stream.MStream.timer>`
         """
         return self.metric_mstreams[name].timer(scale=scale, tags=tags)
