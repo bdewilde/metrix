@@ -82,9 +82,22 @@ How can we do this with ``metrix``?
    INFO:metrix.sinks:MElement(name='wc.sum', value=161690, tags=None)
    INFO:metrix.sinks:MElement(name='wc.mean', value=170.2, tags=None)
 
+With the optional ``networkx`` and ``graphviz`` dependencies installed, we can easily
+visualize what the corresponding collection of metric streams and sinks looks like:
+
+.. code-block:: pycon
+
+   >>> mc.stream.visualize(filename=None)
+
+.. image:: _static/overview-stream.png
+   :scale: 75 %
+   :align: center
+   :alt: Network diagram of metric streams and sinks.
+
+
 .. toctree::
    :maxdepth: 2
-   :caption: contents:
+   :caption: API Reference:
 
    api_reference/coordinator
    api_reference/stream
