@@ -7,12 +7,25 @@ for handling multiple metrics collected individually at high rates with shared o
 destinations, such as a log file and/or database, especially in the case that outputting
 metrics is only required or desired at lower rates.
 
+installation
+------------
+
+This package hasn't yet been published to PyPi (working on it...), but is still readily
+installable via ``pip``:
+
+.. code-block:: bash
+
+   $ python -m pip install git+https://github.com/bdewilde/metrix.git#egg=metrix
+
+As usual, this will also install direct dependencies -- ``streamz`` and ``toolz`` --
+as well as a few other packages needed for them to work.
+
 overview
 --------
 
 Users' entry into ``metrix`` is primarily through the :class:`MCoordinator <metrix.coordinator.MCoordinator>`
 class. It coordinates the flow of metric elements through one or multiple streams into
-one or multiple output destinations ("sinks"), with an optional rate limit imposed
+one or multiple output destinations (called "sinks"), with an optional rate limit imposed
 before each sink to avoid any problematic pileups.
 
 Configuration is left up to users, since it's entirely dependent on specific contexts
@@ -28,11 +41,14 @@ It's important to note that a single metric stream may output *multiple* aggrega
 values per batch, since each unique (name, aggregation, tags) combination is grouped
 together before sending them on to their destinations.
 
-For example: Let's say we want to track the total number of articles published to
-a news site in 5-minute tumbling windows, as well as the total and average word counts
-per batch. Let's say we also want to tag articles by the section in which they're
-published, but this is only needed for the total published counts. Lastly, we'd like
-to log the aggregated results for diagnostic purposes.
+example
+-------
+
+Let's say we want to track the total number of articles published to a news site
+in 5-minute tumbling windows, as well as the total and average word counts per batch.
+We also want to tag articles by the section in which they're published, but this is
+only needed for the total published counts. Lastly, we'd like to log the aggregated
+results for diagnostic purposes.
 
 How can we do this with ``metrix``?
 
@@ -93,6 +109,20 @@ visualize what the corresponding collection of metric streams and sinks looks li
    :scale: 75 %
    :align: center
    :alt: Network diagram of metric streams and sinks.
+
+performance
+-----------
+
+``metrix`` provides features and an API tailored to a particular use case -- "metrics
+tracking through streams" -- but under the hood, ``streamz`` and ``toolz`` do the heavy
+lifting. As such, this package's performance is largely dependent on theirs. According to
+`the docs <https://streamz.readthedocs.io/en/latest/core.html#performance>`_, ``streamz``
+adds microsecond overhead to typical Python operations.
+
+In practical terms, ``metrix`` can process up to about 7500 metric elements per second
+(not including any I/O costs associated with sinks, such as network connections or
+disk writes). This throughput doesn't vary much by the complexity of the input or output
+streams; it's dominated by the total number of messages sent in.
 
 
 .. toctree::
